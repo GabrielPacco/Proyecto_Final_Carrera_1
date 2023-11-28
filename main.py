@@ -32,19 +32,5 @@ def process_images_from_directory(directory_path):
             preprocessed_image_path = os.path.join(PREPROCESSED_DATA_PATH, subfolder)
             data_manager.save_preprocessed_image(preprocessed_image, 'preprocessed_image.jpg', preprocessed_image_path)
 
-    # Aquí puedes añadir código para entrenar el clasificador con las características extraídas y las etiquetas correspondientes
-
-    # Ejemplo: entrenar el clasificador (necesitarás las etiquetas reales de tus datos)
-    # classifier.train(feature_dataset, label_dataset)
-
-    # Opcional: Guardar el modelo entrenado
-    # classifier.save_model(CLASSIFIER_MODEL_PATH)
-
-    # Opcional: Cargar y usar el modelo para hacer predicciones
-    # classifier.load_model(CLASSIFIER_MODEL_PATH)
-    # predictions = classifier.predict(nuevas_caracteristicas)
-
-    # Más código según sea necesario...
-
 if __name__ == "__main__":
     process_images_from_directory(BASE_DATA_PATH)
