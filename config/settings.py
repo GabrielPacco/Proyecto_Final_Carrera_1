@@ -4,6 +4,9 @@ BASE_DATA_PATH = "C:/Users/gabri/Downloads/Proyecto_Final_Carrera_1/data/plantvi
 PREPROCESSED_DATA_PATH = "C:/Users/gabri/Downloads/Proyecto_Final_Carrera_1/data/preprocessed"
 SEGMENTED_DATA_PATH = "C:/Users/gabri/Downloads/Proyecto_Final_Carrera_1/data/segmented"
 FEATURES_DATA_PATH = "C:/Users/gabri/Downloads/Proyecto_Final_Carrera_1/data/features"
+MODEL_DATA_PATH = "C:/Users/gabri/Downloads/Proyecto_Final_Carrera_1/data/model"
+TEST_DATA_PATH = "C:/Users/gabri/Downloads/Proyecto_Final_Carrera_1/data/test"
+NEW_IMAGE_PATH = "C:/Users/gabri/Downloads/Proyecto_Final_Carrera_1/data/new_image"
 
 # Parámetros para el preprocesamiento de imágenes
 IMAGE_SIZE = (256, 256)  # Tamaño al que se redimensionarán las imágenes

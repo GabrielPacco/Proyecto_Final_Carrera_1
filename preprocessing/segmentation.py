@@ -41,7 +41,8 @@ def segment_leaf(image):
         segmented_leaf = cv2.bitwise_and(image, image, mask=mask)
         return segmented_leaf, mask
     else:
-        return None, None
+        # En caso de no encontrar contornos, devolver la imagen original y una máscara vacía
+        return image, np.zeros_like(image)
 
 def segment_color_clusters(image, k=3):
     """
