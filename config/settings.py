@@ -1,12 +1,14 @@
 import numpy as np
 # Rutas de acceso a los directorios de datos
-BASE_DATA_PATH = "C:/Users/gabri/Downloads/Proyecto_Final_Carrera_1/data/plantvillage"
+BASE_DATA_PATH = "C:/Users/gabri/Downloads/Proyecto_Final_Carrera_1/data/plantvillage/Entrenamiento"
 PREPROCESSED_DATA_PATH = "C:/Users/gabri/Downloads/Proyecto_Final_Carrera_1/data/preprocessed"
 SEGMENTED_DATA_PATH = "C:/Users/gabri/Downloads/Proyecto_Final_Carrera_1/data/segmented"
 FEATURES_DATA_PATH = "C:/Users/gabri/Downloads/Proyecto_Final_Carrera_1/data/features"
 MODEL_DATA_PATH = "C:/Users/gabri/Downloads/Proyecto_Final_Carrera_1/data/model"
 TEST_DATA_PATH = "C:/Users/gabri/Downloads/Proyecto_Final_Carrera_1/data/test"
 NEW_IMAGE_PATH = "C:/Users/gabri/Downloads/Proyecto_Final_Carrera_1/data/new_image"
+TRAIN_DATA_PATH = "C:/Users/gabri/Downloads/Proyecto_Final_Carrera_1/data/plantvillage/Prueba"
+LABEL_DATA_PATH = "C:/Users/gabri/Downloads/Proyecto_Final_Carrera_1/data/labels"
 
 # Parámetros para el preprocesamiento de imágenes
 IMAGE_SIZE = (256, 256)  # Tamaño al que se redimensionarán las imágenes

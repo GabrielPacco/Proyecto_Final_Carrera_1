@@ -1,5 +1,7 @@
 import cv2
 import numpy as np
+import config.settings as SEGMENTED_DATA_PATH
+import os
 
 def apply_otsu_threshold(image):
     # Convierte la imagen a escala de grises si no lo está
@@ -19,15 +21,16 @@ def find_contours(image):
     contours, _ = cv2.findContours(image, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     return contours
 
-def segment_leaf(image):
+def segment_leaf(preprocessed_image, original_color_image):
     """
-    Segmenta la hoja de tomate del fondo.
+    Segmenta la hoja de tomate del fondo aplicando la máscara a la imagen original en color.
     """
-    # Aplicar umbralización para obtener la imagen binaria
-    binary_image = apply_otsu_threshold(image)
+    # Aplicar umbralización para obtener la imagen binaria de la imagen preprocesada
+    binary_image = apply_otsu_threshold(preprocessed_image)
     
     # Encontrar contornos y asumir que el contorno más grande es la hoja
     contours = find_contours(binary_image)
+
     if contours:
         # Ordenar los contornos por área y tomar el más grande
         contours = sorted(contours, key=cv2.contourArea, reverse=True)
@@ -35,14 +38,15 @@ def segment_leaf(image):
         
         # Crear una máscara para la hoja
         mask = np.zeros_like(binary_image)
-        cv2.drawContours(mask, [leaf_contour], -1, (255), thickness=cv2.FILLED)
+        cv2.drawContours(mask, [leaf_contour], -1, 255, thickness=cv2.FILLED)
         
-        # Aplicar la máscara a la imagen original
-        segmented_leaf = cv2.bitwise_and(image, image, mask=mask)
+        # Aplicar la máscara a la imagen original en color
+        segmented_leaf = cv2.bitwise_and(original_color_image, original_color_image, mask=mask)
         return segmented_leaf, mask
+    
     else:
         # En caso de no encontrar contornos, devolver la imagen original y una máscara vacía
-        return image, np.zeros_like(image)
+        return original_color_image, np.zeros_like(original_color_image)
 
 def segment_color_clusters(image, k=3):
     """

@@ -3,7 +3,7 @@ import numpy as np
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import GridSearchCV
 from data.prepare_data import load_and_split_data, normalize_features
-from evaluate_model import evaluate_model
+from analysis.evaluate_model import evaluate_model
 from config.settings import FEATURES_DATA_PATH, MODEL_DATA_PATH
 import joblib
 

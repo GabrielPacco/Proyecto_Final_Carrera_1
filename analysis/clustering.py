@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+import matplotlib.pyplot as plt
 
 def k_means_clustering(image, k=3, attempts=10):
     """
@@ -36,3 +37,35 @@ def apply_mask(image, label, cluster_index):
     """
     mask = label.reshape((image.shape[0], image.shape[1])) == cluster_index
     return cv2.bitwise_and(image, image, mask=mask.astype(np.uint8))
+
+
+def analyze_clusters(label, k):
+    """
+    Analiza los clusters resultantes y muestra la distribución de los píxeles en cada cluster.
+    """
+    unique, counts = np.unique(label, return_counts=True)
+    cluster_info = dict(zip(unique, counts))
+
+    print("Distribución de Clusters:")
+    for cluster in cluster_info:
+        print(f"Cluster {cluster}: {cluster_info[cluster]} píxeles")
+
+def visualize_clusters(image, label, k):
+    """
+    Visualiza los clusters resultantes en la imagen.
+    """
+    plt.figure(figsize=(15, 10))
+    for i in range(k):
+        plt.subplot(1, k, i + 1)
+        mask = label.reshape((image.shape[0], image.shape[1])) == i
+        cluster_image = cv2.bitwise_and(image, image, mask=mask.astype(np.uint8))
+        plt.imshow(cluster_image)
+        plt.title(f"Cluster {i}")
+        plt.axis('off')
+    plt.show()
+
+# Ejemplo de uso
+# image = cv2.imread('tu_imagen.jpg')
+# segmented_image, label, _ = k_means_clustering(image, k=3)
+# analyze_clusters(label, k=3)
+# visualize_clusters(image, label, k=3)

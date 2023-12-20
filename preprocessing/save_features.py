@@ -1,40 +1,29 @@
 # save_features.py
-import csv
 from config.settings import FEATURES_DATA_PATH
 import os
 import numpy as np
 
-def initialize_features_file(num_color_features, num_texture_features, num_shape_features):
-    # Generar los encabezados para el archivo CSV
-    color_headers = ['Color_Feature_' + str(i) for i in range(num_color_features)]
-    texture_headers = ['Texture_Feature_' + str(i) for i in range(num_texture_features)]
-    shape_headers = ['Area', 'Perimeter']
-    label_header = ['Label']  # Encabezado para la etiqueta de la imagen
+label_mapping = {'Enferma': 1, 'Sana': 0}
 
-    # Combinar todos los encabezados
-    headers = color_headers + texture_headers + shape_headers + label_header
+def convert_label(label):
+    return label_mapping.get(label, -1)  # Retorna -1 si la etiqueta no se encuentra
 
-    # Escribir los encabezados en el archivo CSV
-    features_file_path = os.path.join(FEATURES_DATA_PATH, 'features.csv')
-    with open(features_file_path, 'w', newline='') as file:
-        writer = csv.writer(file)
-        writer.writerow(headers)
+def save_features_to_npy(features_list, labels_list, filename="features.npy"):
+    # Asegurarse de que las características sean un array de NumPy
+    features_array = np.array(features_list)
+    
+    # Convertir etiquetas en un array de NumPy
+    labels_array = np.array([convert_label(label) for label in labels_list])
 
-def save_features(features, label, folder_name):
-    # Asegurarse de que las características sean un array de NumPy y convertir la etiqueta y el nombre de la carpeta en array
-    features_array = np.array(features)
-    label_array = np.array([label])
-    folder_name_array = np.array([folder_name])
+    # Combinar características y etiquetas
+    data_to_save = np.column_stack((features_array, labels_array))
 
-    # Concatenar todas las características con la etiqueta y el nombre de la carpeta
-    row = np.concatenate((features_array, label_array, folder_name_array))
+    # Guardar este array en un archivo .npy
+    features_file_path = os.path.join(FEATURES_DATA_PATH, filename)
+    np.save(features_file_path, data_to_save)
+    print(f"Características guardadas en: {features_file_path}")
 
-    # Asegurarse de que el archivo de características exista, si no, inicializarlo
-    features_file_path = os.path.join(FEATURES_DATA_PATH, 'features.csv')
-    if not os.path.isfile(features_file_path):
-        # Ajustar la cantidad de características de acuerdo a lo definido en la extracción de características
-        initialize_features_file(len(features_array) - 2 - 1, 24, 2)
-
-    with open(features_file_path, 'a', newline='') as file:
-        writer = csv.writer(file)
-        writer.writerow(row)
+# Uso de la función
+# features_list = [...] # Lista con todas las características extraídas
+# labels_list = [...]   # Lista con todas las etiquetas correspondientes
+# save_features_to_npy(features_list, labels_list)

@@ -1,40 +1,45 @@
 # train_model.py
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score, classification_report
-from data.prepare_data import load_and_split_data
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import classification_report, accuracy_score
 from config.settings import FEATURES_DATA_PATH, MODEL_DATA_PATH
 import joblib
-import os
 import numpy as np
+import os
 
-def train_and_save_model(csv_filepath, model_path):
-    # Cargar y dividir los datos
-    X_train, X_test, y_train, y_test, class_names = load_and_split_data(csv_filepath)
+def load_data(npy_filepath):
+    # Cargar los datos desde un archivo .npy
+    data = np.load(npy_filepath)
+    # Separar las características y las etiquetas
+    features = data[:, :-1]
+    labels = data[:, -1]
+    return features, labels
+
+def train_and_save_model(X, y, model_directory):
+    # Dividir los datos en conjuntos de entrenamiento y prueba
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
 
     # Crear y entrenar el modelo
     model = RandomForestClassifier(n_estimators=100, random_state=42)
     model.fit(X_train, y_train)
 
-    # Hacer predicciones en el conjunto de prueba
-    y_pred = model.predict(X_test)
-
     # Evaluar el modelo
-    accuracy = accuracy_score(y_test, y_pred)
-    print(f'Accuracy: {accuracy}')
+    y_pred = model.predict(X_test)
+    print(f'Accuracy: {accuracy_score(y_test, y_pred)}')
     print(classification_report(y_test, y_pred))
 
     # Guardar el modelo entrenado para uso futuro
-    joblib.dump(model, os.path.join(model_path, 'modelo_entrenado_rf.joblib'))
+    model_file_path = os.path.join(model_directory, 'modelo_entrenado_rf.joblib')
+    joblib.dump(model, model_file_path)
 
-    # Devolver el modelo y los nombres de las clases
-    return model, class_names
+    return model
 
 if __name__ == "__main__":
-    # Definir la ruta al archivo CSV con las características
-    csv_filepath = os.path.join(FEATURES_DATA_PATH, 'features.csv')
+    # Definir la ruta al archivo .npy con las características
+    npy_filepath = FEATURES_DATA_PATH + '/features.npy'
 
-    # Entrenar el modelo y guardar
-    model, class_names = train_and_save_model(csv_filepath, MODEL_DATA_PATH)
+    # Definir la ruta al archivo donde se guardará el modelo
+    model_path = MODEL_DATA_PATH + '/modelo_entrenado_rf.joblib'
 
-    # Opcional: imprimir los nombres de las clases
-    print("Clases del modelo:", class_names)
+    # Entrenar el modelo y guardarlo
+    train_and_save_model(npy_filepath, model_path)
