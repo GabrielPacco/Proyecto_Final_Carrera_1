@@ -33,12 +33,11 @@ def main():
             segmented_image, _ = segment_leaf(preprocessed_image, image)
             save_image(segmented_image, filename, category)
 
-            plot_clusters(features)
-
             features = extract_all_features(segmented_image, image)
             feature_dataset.append(features)
             label = 0 if category == 'Tomato___healthy' else 1
             label_dataset.append(label)
+            #plot_clusters(features)
 
     # Convertir las listas a arrays de NumPy y guardarlas
     feature_dataset = np.array(feature_dataset)
